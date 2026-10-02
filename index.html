@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="2026/11/20–11/26 東京行程：高尾山、上野、神宮外苑、表參道、澀谷、鎌倉江之島、銀座與東京鐵塔。">
+<meta property="og:title" content="東京行程 2026｜11/20–11/26">
+<meta property="og:description" content="朋友共享版東京行程，按日期查看每天時間軸與走動量。">
+<meta property="og:type" content="website">
+<title>東京行程 2026｜11/20–11/26</title>
+<style>
+:root{
+  --bg:#141b24;
+  --panel:#1b2531;
+  --panel-2:#222e3b;
+  --text:#f3f5f8;
+  --muted:#9bb0c9;
+  --line:#314052;
+  --accent:#f06a5f;
+  --accent2:#d9b54a;
+  --soft:#eef2f7;
+  --ink:#18202a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+}
+.shell{max-width:1040px;margin:0 auto;padding:34px 22px 70px}
+.hero{padding:6px 22px 22px}
+h1{
+  margin:0 0 2px;
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  font-size:62px;line-height:1.02;letter-spacing:.03em;font-weight:700
+}
+.dates{
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  font-size:28px;letter-spacing:.08em;color:#a9bfd9;margin:10px 0 20px
+}
+.meta{display:flex;gap:20px;flex-wrap:wrap;color:#a9bfd9;font-size:16px;margin:8px 0}
+.meta b{color:#fff}
+.nav{
+  display:grid;grid-template-columns:repeat(8,1fr);gap:10px;
+  border-bottom:1px solid var(--line);padding:22px 22px 14px;margin-bottom:28px;
+}
+.tab-radio{position:absolute;opacity:0;pointer-events:none}
+.tab{
+  cursor:pointer;border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:14px;
+  min-height:82px;padding:9px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:.2s transform,.2s background,.2s color;user-select:none
+}
+.tab:hover{transform:translateY(-1px);background:var(--panel-2)}
+.tab .num{font-family:Georgia,serif;font-size:31px;font-weight:700;line-height:1}
+.tab .dow{font-size:14px;color:#9eb2c9;margin-top:7px}
+.tab .mini{font-size:12px;color:#8ca0b8;margin-top:2px}
+.day{display:none;padding:0 22px}
+
+/* CSS-only date switching: works even when JavaScript is blocked */
+#tab20:checked ~ .nav .t20,
+#tab21:checked ~ .nav .t21,
+#tab22:checked ~ .nav .t22,
+#tab23:checked ~ .nav .t23,
+#tab24:checked ~ .nav .t24,
+#tab25:checked ~ .nav .t25,
+#tab26:checked ~ .nav .t26,
+#tabresv:checked ~ .nav .tresv{
+  background:var(--soft);color:var(--ink);border-color:var(--soft)
+}
+#tab20:checked ~ .nav .t20 .dow,
+#tab21:checked ~ .nav .t21 .dow,
+#tab22:checked ~ .nav .t22 .dow,
+#tab23:checked ~ .nav .t23 .dow,
+#tab24:checked ~ .nav .t24 .dow,
+#tab25:checked ~ .nav .t25 .dow,
+#tab26:checked ~ .nav .t26 .dow,
+#tabresv:checked ~ .nav .tresv .dow{color:#526173}
+
+#tab20:checked ~ .content #d20,
+#tab21:checked ~ .content #d21,
+#tab22:checked ~ .content #d22,
+#tab23:checked ~ .content #d23,
+#tab24:checked ~ .content #d24,
+#tab25:checked ~ .content #d25,
+#tab26:checked ~ .content #d26,
+#tabresv:checked ~ .content #resv{display:block}
+.day h2{
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  font-size:36px;line-height:1.2;margin:8px 0 5px
+}
+.lead{font-size:17px;color:#a9bfd9;margin:0 0 28px;line-height:1.7}
+.timeline{position:relative;margin-left:18px;padding-left:54px}
+.timeline:before{
+  content:"";position:absolute;left:19px;top:10px;bottom:8px;width:1px;background:var(--line)
+}
+.item{position:relative;margin:0 0 27px}
+.item:before{
+  content:"";position:absolute;left:-40px;top:8px;width:9px;height:9px;border:2px solid #9eb1c8;
+  border-radius:50%;background:var(--bg)
+}
+.item.fixed:before{background:var(--accent);border-color:var(--accent)}
+.item.food:before{background:var(--accent2);border-color:var(--accent2)}
+.time{color:#9db1c7;font-weight:700;margin-right:10px}
+.item.fixed .time{color:var(--accent)}
+.title{font-size:18px;font-weight:760}
+.note{margin:7px 0 0;color:#a7b8cb;line-height:1.62;font-size:15px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#263648;color:#a8c5e4}
+.badge.warn{background:#4a3610;color:#f5cf62}
+.badge.red{background:#4d251f;color:#ff8679}
+.badge.green{background:#173a30;color:#77d8b2}
+.badge.gray{background:#2d3440;color:#c7d0dd}
+.section-note{
+  margin:18px 0 28px;padding:14px 16px;border:1px solid var(--line);background:#18222d;border-radius:12px;
+  color:#a7b8cb;line-height:1.65
+}
+.resv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h3{margin:0 0 8px;font-size:18px}.card p{margin:4px 0;color:#a8bacd;line-height:1.55}
+.card .status{margin-top:10px}
+.toolbar{display:flex;justify-content:flex-end;gap:10px;padding:0 22px 8px}
+button.action{
+  background:#223043;color:#dce8f4;border:1px solid #34465c;border-radius:10px;padding:8px 12px;cursor:pointer
+}
+button.action:hover{background:#2a3a4f}
+[contenteditable="true"]{outline:1px dashed #6e8db3;outline-offset:4px}
+.footer{padding:30px 22px 0;color:#73869c;font-size:12px}
+@media (max-width:760px){
+  h1{font-size:44px}.dates{font-size:21px}
+  .nav{grid-template-columns:repeat(4,1fr)}
+  .tab{min-height:70px}
+  .resv-grid{grid-template-columns:1fr}
+  .timeline{padding-left:42px}.timeline:before{left:14px}.item:before{left:-33px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="hero">
+    <h1>東京獨旅＋五人行</h1>
+    <div class="dates">2026・11/20（五）– 11/26（四）</div><div style="color:#7f93aa;font-size:13px;margin-top:-8px;margin-bottom:12px">朋友分享版・點日期切換每日行程</div>
+    <div class="meta">
+      <span>去程 <b>NRT 18:30 抵達</b></span>
+      <span>回程 <b>NRT 19:30 起飛</b></span>
+      <span>Solo <b>A16 HOSTEL TOKYO</b></span>
+      <span>同行住宿 <b>T-home KEI（押上）</b></span>
+    </div>
+    <div class="meta">
+      <span>固定 <b>11/23 20:00 Peter Luger</b></span>
+      <span>重點 <b>11/24 08:30 鎌倉＋江之島</b></span>
+      <span>11/25 <b>MAPPA・銀座・麻布台・東京鐵塔</b></span>
+    </div>
+  </div>
+
+  <input class="tab-radio" type="radio" name="daytabs" id="tab20" checked>
+<input class="tab-radio" type="radio" name="daytabs" id="tab21">
+<input class="tab-radio" type="radio" name="daytabs" id="tab22">
+<input class="tab-radio" type="radio" name="daytabs" id="tab23">
+<input class="tab-radio" type="radio" name="daytabs" id="tab24">
+<input class="tab-radio" type="radio" name="daytabs" id="tab25">
+<input class="tab-radio" type="radio" name="daytabs" id="tab26">
+<input class="tab-radio" type="radio" name="daytabs" id="tabresv">
+
+<div class="nav">
+  <label class="tab t20" for="tab20"><span class="num">20</span><span class="dow">五・Solo</span></label>
+  <label class="tab t21" for="tab21"><span class="num">21</span><span class="dow">六・Solo</span></label>
+  <label class="tab t22" for="tab22"><span class="num">22</span><span class="dow">日・會合</span></label>
+  <label class="tab t23" for="tab23"><span class="num">23</span><span class="dow">一・假日</span></label>
+  <label class="tab t24" for="tab24"><span class="num">24</span><span class="dow">二</span></label>
+  <label class="tab t25" for="tab25"><span class="num">25</span><span class="dow">三</span></label>
+  <label class="tab t26" for="tab26"><span class="num">26</span><span class="dow">四</span></label>
+  <label class="tab tresv" for="tabresv"><span class="num">✓</span><span class="dow">預約</span></label>
+</div>
+
+<div class="content">
+
+
+  <section id="d20" class="day">
+    <h2>11/20（五）抵達・淺草橋第一晚</h2>
+    <p class="lead">不排正式景點。進東京、入住、吃飯，保留體力給隔天高尾山。</p>
+    <div class="timeline">
+      <div class="item fixed"><span class="time">18:30</span><span class="title">抵達成田機場 NRT</span><div class="note">入境、領行李、交通卡／網路等必要事項。</div></div>
+      <div class="item"><span class="time">19:30–20:15</span><span class="title">京成／都營淺草線系統 → 淺草橋</span><div class="note">優先選可直通都營淺草線班次，少拖行李換車。</div></div>
+      <div class="item"><span class="time">20:30–21:30</span><span class="title">入住 A16 HOSTEL TOKYO</span><div class="note">實際抵達依入境速度與班次調整。</div></div>
+      <div class="item"><span class="time">之後</span><span class="title">淺草橋自由晚餐</span><div class="note">拉麵／居酒屋／便利商店補給。累了就直接休息。</div><div class="badges"><span class="badge gray">自由</span><span class="badge">不跨區</span></div></div>
+    </div>
+  </section>
+
+  <section id="d21" class="day">
+    <h2>11/21（六）高尾山・新宿</h2>
+    <p class="lead">上山 Lift、下山 Cable Car；把紅葉旺季週六的排隊時間也算進去。</p>
+    <div class="timeline">
+      <div class="item"><span class="time">09:00</span><span class="title">A16 出發 → 新宿 → 高尾山口</span></div>
+      <div class="item"><span class="time">10:30</span><span class="title">抵達高尾山口</span><div class="note">補水、上廁所，往 Lift／Cable Car 山麓站。</div></div>
+      <div class="item fixed"><span class="time">10:45–11:30</span><span class="title">排隊＋Lift 上山</span><div class="note">先搭營業時間較短的 Lift；紅葉週六預留 20–45 分鐘排隊。</div><div class="badges"><span class="badge red">上山選 Lift</span></div></div>
+      <div class="item food"><span class="time">11:30–12:30</span><span class="title">半山腰吃吃喝喝</span><div class="note">天狗燒、糰子、蕎麥麵、小吃、展望與紅葉拍照。</div></div>
+      <div class="item"><span class="time">12:30–13:50</span><span class="title">1 號路 → 藥王院</span><div class="note">慢走、參拜、拍照、稍作休息。</div></div>
+      <div class="item"><span class="time">14:20–15:00</span><span class="title">高尾山山頂</span><div class="note">展望、拍照、休息；天氣好留意富士山方向。</div></div>
+      <div class="item fixed"><span class="time">15:45–16:30</span><span class="title">排隊＋Cable Car 下山</span><div class="note">Cable Car 週末 11 月營業較晚，回程彈性比 Lift 好。</div><div class="badges"><span class="badge red">下山選 Cable</span></div></div>
+      <div class="item"><span class="time">17:30–18:15</span><span class="title">回到新宿</span></div>
+      <div class="item"><span class="time">晚上</span><span class="title">新宿 Optional</span><div class="note">歌舞伎町、Kabukicho Tower、Yodobashi、NEWoMan／Lumine、晚餐。腿累就直接回 A16。</div><div class="badges"><span class="badge gray">Optional</span></div></div>
+    </div>
+  </section>
+
+  
+  <section id="d22" class="day">
+    <h2>11/22（日）Solo 秋葉原・16:00 會合・晚上 Optional</h2>
+    <p class="lead">上午保留自己的秋葉原時間；16:00 與朋友在押上會合。晚上不再跑表參道／原宿，依大家體力在上野與六本木二選一。</p>
+    <div class="timeline">
+      <div class="item"><span class="time">09:30–13:00</span><span class="title">秋葉原 Solo</span>
+        <div class="note">Yodobashi Akiba、Electric Town、Radio Kaikan、PC／Gaming、模型／動漫、二手電子。</div>
+        <div class="badges"><span class="badge">Solo</span></div>
+      </div>
+
+      <div class="item food"><span class="time">13:00–13:45</span><span class="title">秋葉原午餐</span></div>
+
+      <div class="item"><span class="time">14:00</span><span class="title">回 A16 拿行李</span></div>
+
+      <div class="item"><span class="time">14:45–15:15</span><span class="title">前往押上</span></div>
+
+      <div class="item fixed"><span class="time">16:00</span><span class="title">朋友會合＋入住 T-home KEI</span>
+        <div class="note">放行李、休息一下，再看大家精神決定晚上去哪。</div>
+      </div>
+
+      <div class="item"><span class="time">Option A</span><span class="title">上野＋阿美橫町｜輕鬆版</span>
+        <div class="note">約 16:30 押上出發 → 17:00–19:00 上野／阿美橫町 → 19:00–20:30 晚餐或居酒屋 → 回押上。</div>
+        <div class="badges"><span class="badge green">走動量較低</span><span class="badge gray">第一晚推薦</span></div>
+      </div>
+
+      <div class="item fixed"><span class="time">Option B</span><span class="title">ROKUSAN ANGEL 六本木｜夜生活版</span>
+        <div class="note">朋友若精神很好，晚餐後前往六本木。以 20:30 場為優先，不用趕 18:30 場；結束後直接回押上。</div>
+        <div class="badges"><span class="badge red">Optional</span><span class="badge">20:30 場優先</span></div>
+      </div>
+    </div>
+
+    <div class="section-note"><b>🚶 走動量：約 8,000–13,000 步</b><br>
+    選上野較輕鬆；選六本木則移動時間增加，但不需要一直走。22 號不再與 23 號重複逛表參道／原宿。</div>
+  </section>
+
+
+  
+  
+  <section id="d23" class="day">
+    <h2>11/23（一・國定假日）銀杏・表參道・Cat Street・澀谷・Peter Luger</h2>
+    <p class="lead">09:00 從押上出發。先看神宮外苑銀杏，再進表參道；之後沿 Cat Street 往澀谷，最後從澀谷搭一站到惠比壽。</p>
+    <div class="timeline">
+      <div class="item"><span class="time">09:00</span><span class="title">押上出發</span>
+        <div class="note">半藏門線前往青山一丁目，再步行到神宮外苑銀杏並木。</div>
+      </div>
+
+      <div class="item fixed"><span class="time">09:40–10:20</span><span class="title">神宮外苑銀杏並木</span>
+        <div class="note">抓約 40 分鐘：走完整段、拍照即可，不延伸逛整個外苑。</div>
+        <div class="badges"><span class="badge">約 40 分鐘</span></div>
+      </div>
+
+      <div class="item"><span class="time">10:20–10:40</span><span class="title">外苑前 → 表參道</span>
+        <div class="note">銀座線 1 站；早到就先走表參道街景，不需要等 Shake Shack。</div>
+      </div>
+
+      <div class="item"><span class="time">10:40–12:00</span><span class="title">表參道大道＋Omotesando Hills</span>
+        <div class="note">從表參道站 A2 出口開始；11:00 後正式逛 Omotesando Hills 與周邊店家。</div>
+      </div>
+
+      <div class="item food"><span class="time">Optional</span><span class="title">KOSUGIYU HARAJUKU 小杉湯原宿</span>
+        <div class="note">若腳開始累，可在神宮前途中泡湯休息約 45–60 分鐘；不泡就把這段時間留給 Cat Street／午餐。</div>
+        <div class="badges"><span class="badge gray">Optional</span><span class="badge">休腳用</span></div>
+        <div class="note"><b>備註：不是混浴，我沒興趣。</b></div>
+      </div>
+
+      <div class="item food"><span class="time">12:00–14:15</span><span class="title">Cat Street＋午餐</span>
+        <div class="note">由表參道／神宮前端沿 Cat Street 往澀谷方向走；中途找店吃午餐。不特地繞 JR 原宿站或竹下通。若有泡湯，這段自然往後順延。</div>
+      </div>
+
+      <div class="item"><span class="time">14:15–15:15</span><span class="title">Supreme Shibuya＋Stüssy Shibuya</span>
+        <div class="note">兩家都在神南一帶，逛完再接澀谷核心區。</div>
+        <div class="badges"><span class="badge">街牌重點</span></div>
+      </div>
+
+      <div class="item"><span class="time">15:15–18:30</span><span class="title">澀谷逛街</span>
+        <div class="note">Shibuya PARCO、Nintendo TOKYO、Pokémon Center、Loft、Hands、Center-gai、Scramble Crossing。依實際購物進度彈性刪減。</div>
+      </div>
+
+      <div class="item"><span class="time">18:30–19:15</span><span class="title">休息＋移動到惠比壽</span>
+        <div class="note">整理戰利品、上廁所；澀谷搭 JR 山手線一站到惠比壽。</div>
+      </div>
+
+      <div class="item fixed"><span class="time">20:00</span><span class="title">Peter Luger Steak House Tokyo</span>
+        <div class="note">晚餐。建議約 19:40 前抵達。</div>
+        <div class="badges"><span class="badge red">訂位重點</span></div>
+      </div>
+    </div>
+
+    <div class="section-note"><b>🚶 走動量：中高｜約 12,000–16,000 步</b><br>
+    若加入小杉湯，總步數差異不大，但中途可以讓腿休息；不泡則購物時間更多。</div>
+  </section>
+
+
+
+  
+  
+  <section id="d24" class="day">
+    <h2>11/24（二）鎌倉・長谷・江之島・Life 超市晚餐</h2>
+    <p class="lead">08:30 從押上出發；這是整趟走路量最大的一天。早半小時主要是增加交通與日落緩衝，不是多塞景點。</p>
+    <div class="timeline">
+      <div class="item"><span class="time">08:30</span><span class="title">押上住宿出發</span></div>
+      <div class="item"><span class="time">約 09:50–10:00</span><span class="title">抵達鎌倉</span></div>
+      <div class="item"><span class="time">10:00–11:30</span><span class="title">鶴岡八幡宮＋小町通</span><div class="note">先八幡宮，再回小町通；不用每家店都逛。</div></div>
+      <div class="item food"><span class="time">11:30–12:30</span><span class="title">鎌倉午餐</span></div>
+      <div class="item"><span class="time">12:45–14:30</span><span class="title">長谷寺＋鎌倉大佛</span><div class="note">兩個景點放同一區一起完成。</div></div>
+      <div class="item"><span class="time">14:30–15:00</span><span class="title">江之電 → 江之島方向</span></div>
+      <div class="item fixed"><span class="time">15:00–16:45</span><span class="title">江之島＋湘南海岸＋日落</span><div class="note">以海岸與日落為主，不硬走完整座島。</div></div>
+      <div class="item"><span class="time">約 17:00</span><span class="title">開始回押上</span></div>
+      <div class="item"><span class="time">約 18:45–19:15</span><span class="title">回到押上</span></div>
+      <div class="item food"><span class="time">約 19:15–19:45</span><span class="title">Life Supermarket 採買一次</span><div class="note">壽司、生魚片、便當、唐揚雞、炸物、沙拉、麵食、啤酒／Highball、水果、甜點。看到想吃的 20–30% off 就直接拿，不再跑第二輪等半價。</div><div class="badges"><span class="badge warn">只去一次</span></div></div>
+      <div class="item"><span class="time">20:00 起</span><span class="title">回 T-home KEI 吃晚餐＋休息</span></div>
+    </div>
+    <div class="section-note"><b>🚶 走動量：高｜約 17,000–22,000+ 步</b><br>這天是全程最累的一天；江之島不追求全島制霸，保留腿力。</div>
+  </section>
+
+
+
+  
+  <section id="d25" class="day">
+    <h2>11/25（三）丸之內・MAPPA・銀座・Bars・麻布台・東京鐵塔</h2>
+    <p class="lead">09:30 從押上出門。早上只安排東京站站舍＋行幸通，10:50 左右到 KITTE，11:00 開門後直接去根室花丸。</p>
+    <div class="timeline">
+      <div class="item"><span class="time">09:30</span><span class="title">押上出發</span></div>
+
+      <div class="item"><span class="time">約 10:10–10:45</span><span class="title">東京站丸之內站舍＋行幸通</span>
+        <div class="note">紅磚站舍拍照、行幸通散步；行幸通中央步道兩側有銀杏。不安排 11:00 前「逛 KITTE」。</div>
+      </div>
+
+      <div class="item"><span class="time">10:45–10:55</span><span class="title">走到 KITTE</span>
+        <div class="note">上廁所、準備 11:00 開門。</div>
+      </div>
+
+      <div class="item food"><span class="time">11:00–約 12:00</span><span class="title">根室花丸 KITTE丸之內</span>
+        <div class="note">11:00 第一輪為目標；順利入場就抓約 45–60 分鐘用餐。若預估等待超過 45–60 分鐘，可考慮放棄。</div>
+        <div class="badges"><span class="badge warn">不可訂位</span></div>
+      </div>
+
+      <div class="item"><span class="time">12:00–12:20</span><span class="title">KITTE → 有樂町</span>
+        <div class="note">步行移動，不需要留一整個小時。</div>
+      </div>
+
+      <div class="item"><span class="time">12:20–12:50</span><span class="title">丸之內仲通／東京國際論壇附近</span>
+        <div class="note">當作散步＋交通 buffer；如果花丸排比較久，這段直接壓縮。</div>
+      </div>
+
+      <div class="item fixed"><span class="time">13:00</span><span class="title">MAPPA EXPO 15th Anniversary</span>
+        <div class="note">YURAKUCHO MUSEUM，抓約 1.5 小時。若實際買到的是 13:30 場，就把前面的散步延長 30 分鐘。</div>
+        <div class="badges"><span class="badge red">13:00 優先</span></div>
+      </div>
+
+      <div class="item"><span class="time">14:30–16:00</span><span class="title">銀座逛街</span>
+        <div class="note">GINZA SIX、百貨、品牌店。</div>
+      </div>
+
+      <div class="item fixed"><span class="time">16:15–17:15</span><span class="title">MIXOLOGY SALON</span>
+        <div class="note">日本茶 × Cocktail；1 杯為主。</div>
+      </div>
+
+      <div class="item"><span class="time">17:20–18:15</span><span class="title">BAR HIGH FIVE</span>
+        <div class="note">1 杯為主；滿席就直接跳過，不影響後面。</div>
+        <div class="badges"><span class="badge gray">滿席就砍</span></div>
+      </div>
+
+      <div class="item"><span class="time">18:45–20:00</span><span class="title">麻布台之丘</span>
+        <div class="note">Christmas Square / Market、燈飾與簡單吃東西；2026 正式活動日期待確認。</div>
+        <div class="badges"><span class="badge warn">待官方確認</span></div>
+      </div>
+
+      <div class="item fixed"><span class="time">20:20–21:30</span><span class="title">東京鐵塔</span>
+        <div class="note">Main Deck 夜景收尾；Top Deck Optional。</div>
+      </div>
+    </div>
+
+    <div class="section-note"><b>🚶 走動量：中高｜約 12,000–16,000 步</b><br>
+    主要方向為東京站 → 有樂町 → 銀座 → 麻布台 → 東京鐵塔，整體沒有明顯折返。</div>
+  </section>
+
+
+  
+  <section id="d26" class="day">
+    <h2>11/26（四）淺草・押上伴手禮・NRT</h2>
+    <p class="lead">最後一天不用 08:30 就到淺草。09:30 左右抵達比較適合「參拜＋仲見世逛店」，下午再回押上收尾並直接前往機場。</p>
+    <div class="timeline">
+      <div class="item"><span class="time">約 09:00</span><span class="title">押上住宿出發</span></div>
+
+      <div class="item fixed"><span class="time">09:30–11:00</span><span class="title">淺草寺＋仲見世</span>
+        <div class="note">雷門、仲見世、寶藏門、本堂、拍照與淺草限定伴手禮。這個時間比 08:30 更容易遇到已開門的商店。</div>
+      </div>
+
+      <div class="item"><span class="time">11:00–11:20</span><span class="title">淺草 → 押上</span></div>
+
+      <div class="item"><span class="time">11:20–13:30</span><span class="title">Tokyo Solamachi 最後採買</span>
+        <div class="note">東京伴手禮、零食、甜點、雜貨。</div>
+      </div>
+
+      <div class="item food"><span class="time">13:30–14:30</span><span class="title">午餐</span></div>
+
+      <div class="item"><span class="time">14:30–15:00</span><span class="title">最後採買</span></div>
+
+      <div class="item"><span class="time">15:00–15:20</span><span class="title">回住宿拿行李</span></div>
+
+      <div class="item"><span class="time">15:30–15:45</span><span class="title">到押上站</span></div>
+
+      <div class="item fixed"><span class="time">約 16:00</span><span class="title">押上 → NRT</span>
+        <div class="note">目標約 17:00 抵達成田機場。</div>
+      </div>
+
+      <div class="item fixed"><span class="time">19:30</span><span class="title">航班起飛</span></div>
+    </div>
+
+    <div class="section-note"><b>🚶 走動量：中｜約 8,000–11,000 步</b><br>
+    最後一天只在淺草／押上活動，不跨東京跑，保留足夠機場緩衝。</div>
+  </section>
+
+
+  <section id="resv" class="day">
+    <h2>預約・待確認</h2>
+    <p class="lead">這裡集中放不能忘記的訂位、門票與出發前確認事項。</p>
+    <div class="resv-grid">
+      <div class="card"><h3>Peter Luger</h3><p>11/23 20:00・惠比壽</p><div class="status"><span class="badge red">需訂位</span></div></div>
+      <div class="card"><h3>MAPPA EXPO</h3><p>11/25 13:00 優先・YURAKUCHO MUSEUM</p><div class="status"><span class="badge red">建議預約</span></div></div>
+      <div class="card"><h3>MIXOLOGY SALON</h3><p>11/25 約 16:15・GINZA SIX 13F</p><div class="status"><span class="badge">確認是否預約</span></div></div>
+      <div class="card"><h3>BAR HIGH FIVE</h3><p>11/25 約 17:20・銀座 5 丁目</p><div class="status"><span class="badge gray">不可預約／當天確認</span></div></div>
+      <div class="card"><h3>麻布台之丘 Christmas Square</h3><p>11/25 晚上</p><div class="status"><span class="badge warn">待 2026 官方日期</span></div></div>
+      <div class="card"><h3>高尾山</h3><p>11/21・上 Lift／下 Cable Car</p><div class="status"><span class="badge">當日依排隊調整</span></div></div>
+      <div class="card"><h3>鎌倉交通</h3><p>11/24・押上出發</p><div class="status"><span class="badge">待細排</span></div></div>
+      <div class="card"><h3>NRT 回程</h3><p>11/26・押上約 16:00 出發</p><div class="status"><span class="badge">出發前確認實際班次</span></div></div>
+    </div>
+  </section>
+
+  </div>
+<div class="footer">朋友分享版｜點上方日期即可切換每日行程。此頁為單一 HTML 檔，可直接以瀏覽器開啟。</div>
+</div>
+
+
+</body>
+</html>
